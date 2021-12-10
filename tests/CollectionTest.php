@@ -289,7 +289,7 @@ class CollectionTest extends TestCase
 
     public function testSorted(): void
     {
-        $collection       = new Collection([3, 1, 2, 9, 7]);
+        $collection = new Collection([3, 1, 2, 9, 7]);
         $sortedCollection = $collection->sorted();
 
         $this->assertNotSame($collection, $sortedCollection);
@@ -298,7 +298,7 @@ class CollectionTest extends TestCase
 
     public function testArrayAccess(): void
     {
-        $collection        = new Collection();
+        $collection = new Collection();
         $collection['foo'] = 'bar';
         $collection['baz'] = 'qux';
 
