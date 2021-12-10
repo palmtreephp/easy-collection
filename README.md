@@ -1,7 +1,7 @@
 # :palm_tree: Palmtree Easy Collection
 
 [![License](http://img.shields.io/packagist/l/palmtree/easy-collection.svg)](LICENSE)
-[![Build Status](https://scrutinizer-ci.com/g/palmtreephp/collection/badges/build.png?b=master)](https://scrutinizer-ci.com/g/palmtreephp/collection/build-status/master)
+[![Build](https://img.shields.io/github/workflow/status/palmtreephp/easy-collection/Build.svg)](https://github.com/palmtreephp/easy-collection/actions/workflows/build.yml)
 
 Simple collection library which provides commonly used functionality missing from arrays.
 
