@@ -40,6 +40,40 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
     }
 
     /**
+     * Sets the given element to the given key in the collection.
+     *
+     * @param TKey $key
+     * @param T $element
+     */
+    public function set($key, $element): self
+    {
+        $this->elements[$key] = $element;
+
+        return $this;
+    }
+
+    /**
+     * Adds the given element onto the end of the collection.
+     *
+     * @param T $element
+     */
+    public function add($element): self
+    {
+        if (!array_is_list($this->elements)) {
+            throw new \LogicException(sprintf('Cannot add an element to a collection which is not a list. Use %s::%s instead', __CLASS__, 'set'));
+        }
+
+        $lastKey = (int)$this->lastKey();
+
+        /** @var TKey $key */
+        $key = $lastKey + 1;
+
+        $this->elements[$key] = $element;
+
+        return $this;
+    }
+
+    /**
      * Removes the element with the given key.
      *
      * @param TKey $key

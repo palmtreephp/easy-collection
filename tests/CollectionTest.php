@@ -9,6 +9,43 @@ use PHPUnit\Framework\TestCase;
 
 class CollectionTest extends TestCase
 {
+    public function testAdd(): void
+    {
+        $obj1 = new \stdClass();
+        $obj2 = new \stdClass();
+
+        $collection = new Collection([$obj1]);
+        $collection->add($obj2);
+
+        $this->assertSame($obj2, $collection->last());
+        $this->assertSame($obj1, $collection->get(0));
+        $this->assertSame($obj2, $collection->get(1));
+    }
+
+    public function testCannotAddToNonList(): void
+    {
+        $this->expectException(\LogicException::class);
+        $this->expectExceptionMessage('Cannot add an element to a collection which is not a list. Use Palmtree\EasyCollection\Collection::set instead');
+
+        $obj1 = new \stdClass();
+        $obj2 = new \stdClass();
+
+        $collection = new Collection(['foo' => $obj1]);
+
+        $collection->add($obj2);
+    }
+
+    public function testSet(): void
+    {
+        $obj1 = new \stdClass();
+        $obj2 = new \stdClass();
+
+        $collection = new Collection(['foo' => $obj1]);
+        $collection->set('bar', $obj2);
+
+        $this->assertSame($obj2, $collection->get('bar'));
+    }
+
     public function testGet(): void
     {
         $obj1 = new \stdClass();
@@ -252,7 +289,7 @@ class CollectionTest extends TestCase
 
     public function testSorted(): void
     {
-        $collection = new Collection([3, 1, 2, 9, 7]);
+        $collection       = new Collection([3, 1, 2, 9, 7]);
         $sortedCollection = $collection->sorted();
 
         $this->assertNotSame($collection, $sortedCollection);
@@ -261,7 +298,7 @@ class CollectionTest extends TestCase
 
     public function testArrayAccess(): void
     {
-        $collection = new Collection();
+        $collection        = new Collection();
         $collection['foo'] = 'bar';
         $collection['baz'] = 'qux';
 
