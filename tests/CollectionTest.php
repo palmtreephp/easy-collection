@@ -296,6 +296,25 @@ class CollectionTest extends TestCase
         $this->assertSame([1, 2, 3, 7, 9], $sortedCollection->values()->toArray());
     }
 
+    public function testIsList(): void
+    {
+        $collection = new Collection(['foo', 'bar', 'baz']);
+
+        $this->assertTrue($collection->isList());
+
+        $collection = new Collection(['foo' => 'bar', 'baz' => 'qux']);
+
+        $this->assertFalse($collection->isList());
+
+        $collection = new Collection([0 => 'foo', 2 => 'bar']);
+
+        $this->assertFalse($collection->isList());
+
+        $collection = new Collection([1 => 'foo', 2 => 'bar']);
+
+        $this->assertFalse($collection->isList());
+    }
+
     public function testArrayAccess(): void
     {
         $collection = new Collection();

@@ -11,9 +11,7 @@
         }
     ],
     "require": {
-        "php": ">=7.4",
-        "ext-json": "*",
-        "symfony/polyfill-php81": "^1.23"
+        "php": "^7.4||^8.0"
     },
     "autoload": {
         "psr-4": {
@@ -27,8 +25,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Palmtree\\EasyCollection\\Test\\": "tests",
-            "Palmtree\\EasyCollection\\Test\\Fixture\\": "tests/fixtures"
+            "Palmtree\\EasyCollection\\Test\\": "tests"
         }
     }
 }

@@ -59,7 +59,7 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
      */
     public function add($element): self
     {
-        if (!array_is_list($this->elements)) {
+        if (!$this->isList()) {
             throw new \LogicException(sprintf('Cannot add an element to a collection which is not a list. Use %s::%s instead', __CLASS__, 'set'));
         }
 
@@ -339,6 +339,28 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
     public function clear(): void
     {
         $this->elements = [];
+    }
+
+    /**
+     * Returns whether the collection is a list as per array_is_list.
+     *
+     * Credit: https://github.com/symfony/polyfill-php81
+     */
+    public function isList(): bool
+    {
+        if ($this->isEmpty() || $this->elements === array_values($this->elements)) {
+            return true;
+        }
+
+        $nextKey = -1;
+
+        foreach ($this->elements as $k => $v) {
+            if ($k !== ++$nextKey) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     /**

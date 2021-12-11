@@ -18,17 +18,18 @@ composer require palmtree/easy-collection
 ## Usage
 
 ```php
-<?php
+use Palmtree\EasyCollection\Collection
 
-$collection = new \Palmtree\EasyCollection\Collection(['foo' => 'bar', 'baz' => 'qux']);
+$collection = new Collection(['foo' => 'bar', 'baz' => 'qux']);
 
 $foo = $collection->get('foo');
-
-$foo = $collection->find(fn($v) => $v === 'bar');
-
 $collection->set('baz2', 'qux');
 
-$quxCollection = $collection->filter(fn($v) => $v === 'qux');
+// find returns the first matching element
+$foo = $collection->find(fn ($v) => $v === 'bar');
+
+// filter returns a new filtered collection
+$quxCollection = $collection->filter(fn ($v) => $v === 'qux');
 
 $collection->remove('baz');
 ```
