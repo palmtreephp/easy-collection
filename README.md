@@ -34,6 +34,23 @@ $quxCollection = $collection->filter(fn ($v) => $v === 'qux');
 $collection->remove('baz');
 ```
 
+Collections implement ArrayAccess, IteratorAggregate and Countable:
+
+```php
+$collection = new Collection();
+
+$collection['foo'] = 'bar';
+$collection['bar'] = 'baz';
+
+count($collection); // returns 2
+isset($collection['foo']); // returns true
+unset($collection['foo']);
+
+foreach ($collection as $key => $value) {
+    // do stuff with value and/or key
+}
+```
+
 Many other methods are provided. Read through the documented source code to see more.
 
 ## License
