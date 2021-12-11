@@ -1,6 +1,6 @@
 # :palm_tree: Palmtree Easy Collection
 
-[![License](http://img.shields.io/packagist/l/palmtree/easy-collection.svg)](LICENSE)
+[![License](https://img.shields.io/github/license/palmtreephp/easy-collection)](LICENSE)
 [![Build](https://img.shields.io/github/workflow/status/palmtreephp/easy-collection/Build.svg)](https://github.com/palmtreephp/easy-collection/actions/workflows/build.yml)
 
 Simple collection library which provides commonly used functionality missing from arrays.
