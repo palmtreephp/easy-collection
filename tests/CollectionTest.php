@@ -265,6 +265,8 @@ class CollectionTest extends TestCase
     {
         $collection = new Collection([3, 1, 2, 9, 7]);
 
+        $collection->sort();
+
         $this->assertSame([1, 2, 3, 7, 9], $collection->values()->toArray());
 
         $collection->sort(fn ($a, $b) => $b <=> $a);
