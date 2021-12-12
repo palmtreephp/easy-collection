@@ -59,16 +59,8 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
      */
     public function add($element): self
     {
-        if (!$this->isList()) {
-            throw new \LogicException(sprintf('Cannot add an element to a collection which is not a list. Use %s::%s instead', __CLASS__, 'set'));
-        }
-
-        $lastKey = (int)$this->lastKey();
-
-        /** @var TKey $key */
-        $key = $lastKey + 1;
-
-        $this->elements[$key] = $element;
+        /** @psalm-suppress InvalidPropertyAssignmentValue  */
+        $this->elements[] = $element;
 
         return $this;
     }
@@ -230,9 +222,11 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
     /**
      * Returns a new collection whose values are mapped by the callback function.
      *
-     * @param callable(T, TKey=):mixed $callback
+     * @param callable(T, TKey=):U $callback
      *
-     * @return Collection<TKey, mixed>
+     * @return Collection<TKey, U>
+     *
+     * @template U
      */
     public function map(callable $callback): self
     {
@@ -296,7 +290,7 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
      *
      * @see https://www.php.net/manual/en/function.asort.php
      *
-     * @param callable(T)|null $comparator
+     * @param ?callable(T):int $comparator
      *
      * @return Collection<TKey,T>
      */
@@ -316,7 +310,7 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
     /**
      * Returns a new collection with the elements sorted.
      *
-     * @param callable(T)|null $comparator
+     * @param ?callable(T):int $comparator
      *
      * @return Collection<TKey,T>
      */
@@ -336,9 +330,11 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
     /**
      * Clears the collection.
      */
-    public function clear(): void
+    public function clear(): self
     {
         $this->elements = [];
+
+        return $this;
     }
 
     /**
@@ -354,7 +350,7 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
 
         $nextKey = -1;
 
-        foreach ($this->elements as $k => $v) {
+        foreach ($this->elements as $k => $_) {
             if ($k !== ++$nextKey) {
                 return false;
             }
@@ -382,28 +378,50 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
     /**
      * @return \ArrayIterator<TKey,T>
      */
-    public function getIterator(): \ArrayIterator
+    public function getIterator(): \Traversable
     {
         return new \ArrayIterator($this->elements);
     }
 
+    /**
+     * @param TKey $offset
+     */
     public function offsetExists($offset): bool
     {
-        return isset($this->elements[$offset]);
+        return $this->containsKey($offset);
     }
 
+    /**
+     * @param TKey $offset
+     *
+     * @return T
+     */
+    #[\ReturnTypeWillChange]
     public function offsetGet($offset)
     {
-        return $this->elements[$offset];
+        return $this->get($offset);
     }
 
+    /**
+     * @param TKey|null $offset
+     * @param T         $value
+     */
     public function offsetSet($offset, $value): void
     {
-        $this->elements[$offset] = $value;
+        if (!isset($offset)) {
+            $this->add($value);
+
+            return;
+        }
+
+        $this->set($offset, $value);
     }
 
+    /**
+     * @param TKey $offset
+     */
     public function offsetUnset($offset): void
     {
-        unset($this->elements[$offset]);
+        $this->remove($offset);
     }
 }

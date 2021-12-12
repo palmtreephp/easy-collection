@@ -22,19 +22,6 @@ class CollectionTest extends TestCase
         $this->assertSame($obj2, $collection->get(1));
     }
 
-    public function testCannotAddToNonList(): void
-    {
-        $this->expectException(\LogicException::class);
-        $this->expectExceptionMessage('Cannot add an element to a collection which is not a list. Use Palmtree\EasyCollection\Collection::set instead');
-
-        $obj1 = new \stdClass();
-        $obj2 = new \stdClass();
-
-        $collection = new Collection(['foo' => $obj1]);
-
-        $collection->add($obj2);
-    }
-
     public function testSet(): void
     {
         $obj1 = new \stdClass();
@@ -277,8 +264,6 @@ class CollectionTest extends TestCase
     public function testSort(): void
     {
         $collection = new Collection([3, 1, 2, 9, 7]);
-
-        $collection->sort();
 
         $this->assertSame([1, 2, 3, 7, 9], $collection->values()->toArray());
 
