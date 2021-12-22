@@ -59,42 +59,48 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
      */
     public function add($element): self
     {
-        /** @psalm-suppress InvalidPropertyAssignmentValue  */
+        /** @psalm-suppress InvalidPropertyAssignmentValue */
         $this->elements[] = $element;
 
         return $this;
     }
 
     /**
-     * Removes the element with the given key.
+     * Removes the element with the given key from the collection and returns it.
      *
      * @param TKey $key
      *
-     * @return Collection<TKey,T>
+     * @return T|null
      */
-    public function remove($key): self
+    public function remove($key)
     {
+        if (!$this->containsKey($key)) {
+            return null;
+        }
+
+        $removed = $this->elements[$key];
+
         unset($this->elements[$key]);
 
-        return $this;
+        return $removed;
     }
 
     /**
-     * Removes the given element.
+     * Removes the given element from the collection and returns whether it existed or not.
      *
      * @param T $element
-     *
-     * @return Collection<TKey,T>
      */
-    public function removeElement($element): self
+    public function removeElement($element): bool
     {
-        $key = array_search($element, $this->elements, true);
+        $key = $this->key($element);
 
-        if ($key !== false) {
-            $this->remove($key);
+        if ($key === false) {
+            return false;
         }
 
-        return $this;
+        unset($this->elements[$key]);
+
+        return true;
     }
 
     /**
@@ -167,6 +173,18 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
         }
 
         return $this->elements[$lastKey];
+    }
+
+    /**
+     * Returns the given element's key if it is present within the collection or false otherwise.
+     *
+     * @param T $element
+     *
+     * @return TKey|false
+     */
+    public function key($element)
+    {
+        return array_search($element, $this->elements, true);
     }
 
     /**

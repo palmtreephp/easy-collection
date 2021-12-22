@@ -44,6 +44,17 @@ class CollectionTest extends TestCase
         $this->assertSame($obj2, $collection->get('bar'));
     }
 
+    public function testKey(): void
+    {
+        $obj1 = new \stdClass();
+        $obj2 = new \stdClass();
+
+        $collection = new Collection(['foo' => $obj1, 'bar' => $obj2]);
+
+        $this->assertSame('foo', $collection->key($obj1));
+        $this->assertSame('bar', $collection->key($obj2));
+    }
+
     public function testRemoveElement(): void
     {
         $obj1 = new \stdClass();
@@ -51,10 +62,14 @@ class CollectionTest extends TestCase
 
         $collection = new Collection([$obj1, $obj2]);
 
-        $collection->removeElement($obj1);
+        $result = $collection->removeElement($obj1);
 
+        $this->assertTrue($result);
         $this->assertFalse($collection->contains($obj1));
         $this->assertTrue($collection->contains($obj2));
+
+        $result = $collection->removeElement(new \stdClass());
+        $this->assertFalse($result);
     }
 
     public function testRemove(): void
@@ -64,10 +79,14 @@ class CollectionTest extends TestCase
 
         $collection = new Collection(['foo' => $obj1, 'bar' => $obj2]);
 
-        $collection->remove('foo');
+        $removed = $collection->remove('foo');
 
         $this->assertFalse($collection->contains($obj1));
         $this->assertTrue($collection->contains($obj2));
+        $this->assertSame($removed, $obj1);
+
+        $removed = $collection->remove('noop');
+        $this->assertNull($removed);
     }
 
     public function testKeys(): void
@@ -221,6 +240,10 @@ class CollectionTest extends TestCase
 
         $collection = new Collection(['foo' => $obj1, 'bar' => $obj2]);
 
+        $this->assertTrue($collection->containsKey('foo'));
+        $this->assertTrue($collection->containsKey('bar'));
+
+        $collection = new Collection(['foo' => null, 'bar' => null]);
         $this->assertTrue($collection->containsKey('foo'));
         $this->assertTrue($collection->containsKey('bar'));
     }
