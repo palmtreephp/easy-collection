@@ -3,10 +3,12 @@
 [![License](https://img.shields.io/github/license/palmtreephp/easy-collection)](LICENSE)
 [![Build](https://img.shields.io/github/workflow/status/palmtreephp/easy-collection/Build.svg)](https://github.com/palmtreephp/easy-collection/actions/workflows/build.yml)
 
-Simple collection library which provides commonly used functionality missing from arrays.
+Collection library which provides commonly used functionality missing from arrays.
 
 ## Requirements
-* PHP >= 7.4
+* PHP >= 8.0
+
+For PHP 7.4 support use v1 - note that v1 is no longer maintained.
 
 ## Installation
 
@@ -34,7 +36,7 @@ $quxCollection = $collection->filter(fn ($v) => $v === 'qux');
 $collection->remove('baz');
 ```
 
-Collections implement ArrayAccess, IteratorAggregate and Countable:
+Collections implement `ArrayAccess`, `IteratorAggregate` and `Countable`:
 
 ```php
 $collection = new Collection();
@@ -51,7 +53,7 @@ foreach ($collection as $key => $value) {
 }
 ```
 
-Many other methods are provided. Read through the documented source code to see more.
+Many other methods are provided. Read through the documented [source code](src/Collection.php) to see more.
 
 ## License
 

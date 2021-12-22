@@ -9,6 +9,7 @@ namespace Palmtree\EasyCollection;
  * @template T
  *
  * @template-implements \IteratorAggregate<TKey,T>
+ * @template-implements \ArrayAccess<TKey,T>
  */
 class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
 {
@@ -34,7 +35,7 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
      *
      * @return T
      */
-    public function get($key)
+    public function get(int|string $key): mixed
     {
         return $this->elements[$key];
     }
@@ -44,8 +45,10 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
      *
      * @param TKey $key
      * @param T    $element
+     *
+     * @return Collection<TKey, T>
      */
-    public function set($key, $element): self
+    public function set(int|string $key, mixed $element): self
     {
         $this->elements[$key] = $element;
 
@@ -56,8 +59,10 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
      * Adds the given element onto the end of the collection.
      *
      * @param T $element
+     *
+     * @return Collection<TKey,T>
      */
-    public function add($element): self
+    public function add(mixed $element): self
     {
         /** @psalm-suppress InvalidPropertyAssignmentValue */
         $this->elements[] = $element;
@@ -72,7 +77,7 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
      *
      * @return T|null
      */
-    public function remove($key)
+    public function remove(int|string $key)
     {
         if (!$this->containsKey($key)) {
             return null;
@@ -90,7 +95,7 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
      *
      * @param T $element
      */
-    public function removeElement($element): bool
+    public function removeElement(mixed $element): bool
     {
         $key = $this->key($element);
 
@@ -128,7 +133,7 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
      *
      * @return TKey|null
      */
-    public function firstKey()
+    public function firstKey(): int|string|null
     {
         return array_key_first($this->elements);
     }
@@ -138,7 +143,7 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
      *
      * @return TKey|null
      */
-    public function lastKey()
+    public function lastKey(): int|string|null
     {
         return array_key_last($this->elements);
     }
@@ -148,7 +153,7 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
      *
      * @return T|null
      */
-    public function first()
+    public function first(): mixed
     {
         $firstKey = $this->firstKey();
 
@@ -164,7 +169,7 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
      *
      * @return T|null
      */
-    public function last()
+    public function last(): mixed
     {
         $lastKey = $this->lastKey();
 
@@ -182,7 +187,7 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
      *
      * @return TKey|false
      */
-    public function key($element)
+    public function key(mixed $element): int|string|false
     {
         return array_search($element, $this->elements, true);
     }
@@ -192,7 +197,7 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
      *
      * @param T $element
      */
-    public function contains($element): bool
+    public function contains(mixed $element): bool
     {
         return \in_array($element, $this->elements, true);
     }
@@ -202,7 +207,7 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
      *
      * @param TKey $key
      */
-    public function containsKey($key): bool
+    public function containsKey(int|string $key): bool
     {
         return isset($this->elements[$key]) || \array_key_exists($key, $this->elements);
     }
@@ -214,7 +219,7 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
      *
      * @return T|null
      */
-    public function find(callable $predicate)
+    public function find(callable $predicate): mixed
     {
         foreach ($this->elements as $element) {
             if ($predicate($element)) {
@@ -261,11 +266,8 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
      * Reduces the collection a single value.
      *
      * @param callable(mixed, T):mixed $callback
-     * @param mixed                    $initial
-     *
-     * @return mixed|null
      */
-    public function reduce(callable $callback, $initial = null)
+    public function reduce(callable $callback, mixed $initial = null): mixed
     {
         return array_reduce($this->elements, $callback, $initial);
     }
@@ -308,7 +310,7 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
      *
      * @see https://www.php.net/manual/en/function.asort.php
      *
-     * @param ?callable(T):int $comparator
+     * @param callable(T):int $comparator
      *
      * @return Collection<TKey,T>
      */
@@ -328,7 +330,7 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
     /**
      * Returns a new collection with the elements sorted.
      *
-     * @param ?callable(T):int $comparator
+     * @param callable(T):int $comparator
      *
      * @return Collection<TKey,T>
      */
@@ -347,6 +349,8 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
 
     /**
      * Clears the collection.
+     *
+     * @return Collection<TKey,T>
      */
     public function clear(): self
     {
@@ -373,6 +377,8 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
 
     /**
      * Returns the collection as a native array.
+     *
+     * @return array<TKey,T>
      */
     public function toArray(): array
     {
@@ -400,8 +406,7 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
      *
      * @return T
      */
-    #[\ReturnTypeWillChange]
-    public function offsetGet($offset)
+    public function offsetGet(mixed $offset): mixed
     {
         return $this->get($offset);
     }
@@ -410,7 +415,7 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
      * @param TKey|null $offset
      * @param T         $value
      */
-    public function offsetSet($offset, $value): void
+    public function offsetSet(mixed $offset, mixed $value): void
     {
         if (!isset($offset)) {
             $this->add($value);
@@ -424,7 +429,7 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
     /**
      * @param TKey $offset
      */
-    public function offsetUnset($offset): void
+    public function offsetUnset(mixed $offset): void
     {
         $this->remove($offset);
     }
