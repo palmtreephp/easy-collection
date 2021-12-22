@@ -286,19 +286,15 @@ class CollectionTest extends TestCase
     public function testIsList(): void
     {
         $collection = new Collection(['foo', 'bar', 'baz']);
-
         $this->assertTrue($collection->isList());
 
         $collection = new Collection(['foo' => 'bar', 'baz' => 'qux']);
-
         $this->assertFalse($collection->isList());
 
         $collection = new Collection([0 => 'foo', 2 => 'bar']);
-
         $this->assertFalse($collection->isList());
 
         $collection = new Collection([1 => 'foo', 2 => 'bar']);
-
         $this->assertFalse($collection->isList());
     }
 
@@ -317,6 +313,12 @@ class CollectionTest extends TestCase
         $this->assertFalse($collection->containsKey('foo'));
 
         $this->assertSame('qux', $collection['baz']);
+
+        $collection = new Collection();
+        $collection[] = 'foo';
+        $collection[] = 'bar';
+
+        $this->assertSame(['foo', 'bar'], $collection->toArray());
     }
 
     public function testIterator(): void

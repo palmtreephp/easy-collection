@@ -339,24 +339,10 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
 
     /**
      * Returns whether the collection is a list as per array_is_list.
-     *
-     * Credit: https://github.com/symfony/polyfill-php81
      */
     public function isList(): bool
     {
-        if ($this->isEmpty() || $this->elements === array_values($this->elements)) {
-            return true;
-        }
-
-        $nextKey = -1;
-
-        foreach ($this->elements as $k => $_) {
-            if ($k !== ++$nextKey) {
-                return false;
-            }
-        }
-
-        return true;
+        return $this->isEmpty() || $this->elements === array_values($this->elements);
     }
 
     /**
