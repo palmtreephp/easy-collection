@@ -24,7 +24,7 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
     public function __construct(iterable $elements = [])
     {
         foreach ($elements as $key => $element) {
-            $this->elements[$key] = $element;
+            $this->set($key, $element);
         }
     }
 
