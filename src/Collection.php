@@ -10,6 +10,8 @@ namespace Palmtree\EasyCollection;
  *
  * @template-implements \IteratorAggregate<TKey,T>
  * @template-implements \ArrayAccess<TKey,T>
+ *
+ * @psalm-consistent-constructor
  */
 class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
 {
@@ -26,6 +28,19 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
         foreach ($elements as $key => $element) {
             $this->set($key, $element);
         }
+    }
+
+    /**
+     * @template UKey of array-key
+     * @template U
+     *
+     * @param iterable<UKey,U> $elements
+     *
+     * @return Collection<UKey, U>
+     */
+    public static function create(iterable $elements = []): self
+    {
+        return new static($elements);
     }
 
     /**
