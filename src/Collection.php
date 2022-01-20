@@ -73,14 +73,16 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
     /**
      * Adds the given element onto the end of the collection.
      *
-     * @param T $element
+     * @param T ...$element
      *
      * @return Collection<TKey,T>
      */
-    public function add(mixed $element): self
+    public function add(mixed ...$element): self
     {
-        /** @psalm-suppress InvalidPropertyAssignmentValue */
-        $this->elements[] = $element;
+        foreach ($element as $el) {
+            /** @psalm-suppress InvalidPropertyAssignmentValue */
+            $this->elements[] = $el;
+        }
 
         return $this;
     }
