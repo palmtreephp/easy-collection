@@ -288,22 +288,24 @@ class CollectionTest extends TestCase
     {
         $collection = new Collection([3, 1, 2, 9, 7]);
 
-        $collection->sort();
+        $sorted = $collection->sort()->values();
 
-        $this->assertSame([1, 2, 3, 7, 9], $collection->values()->toArray());
+        $this->assertNotSame($collection, $sorted);
 
-        $collection->sort(fn ($a, $b) => $b <=> $a);
+        $this->assertSame([1, 2, 3, 7, 9], $sorted->toArray());
 
-        $this->assertSame([9, 7, 3, 2, 1], $collection->values()->toArray());
+        $sorted = $collection->sort(fn ($a, $b) => $b <=> $a)->values();
+
+        $this->assertSame([9, 7, 3, 2, 1], $sorted->toArray());
     }
 
-    public function testSorted(): void
+    public function testSortWithStringKeys(): void
     {
-        $collection = new Collection([3, 1, 2, 9, 7]);
-        $sortedCollection = $collection->sorted();
+        $collection = new Collection(['foo' => 3, 'bar' => 1, 'baz' => 2]);
 
-        $this->assertNotSame($collection, $sortedCollection);
-        $this->assertSame([1, 2, 3, 7, 9], $sortedCollection->values()->toArray());
+        $sorted = $collection->sort();
+
+        $this->assertSame(['bar' => 1, 'baz' => 2, 'foo' => 3], $sorted->toArray());
     }
 
     public function testIsList(): void
