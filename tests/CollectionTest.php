@@ -293,10 +293,6 @@ class CollectionTest extends TestCase
         $this->assertNotSame($collection, $sorted);
 
         $this->assertSame([1, 2, 3, 7, 9], $sorted->toArray());
-
-        $sorted = $collection->sort(fn ($a, $b) => $b <=> $a)->values();
-
-        $this->assertSame([9, 7, 3, 2, 1], $sorted->toArray());
     }
 
     public function testSortWithStringKeys(): void
@@ -304,6 +300,24 @@ class CollectionTest extends TestCase
         $collection = new Collection(['foo' => 3, 'bar' => 1, 'baz' => 2]);
 
         $sorted = $collection->sort();
+
+        $this->assertSame(['bar' => 1, 'baz' => 2, 'foo' => 3], $sorted->toArray());
+    }
+
+    public function testUSort(): void
+    {
+        $collection = new Collection([3, 1, 2, 9, 7]);
+
+        $sorted = $collection->usort(fn ($a, $b) => $b <=> $a)->values();
+
+        $this->assertSame([9, 7, 3, 2, 1], $sorted->toArray());
+    }
+
+    public function testUSortWithStringKeys(): void
+    {
+        $collection = new Collection(['foo' => 3, 'bar' => 1, 'baz' => 2]);
+
+        $sorted = $collection->usort(fn ($a, $b) => $a <=> $b);
 
         $this->assertSame(['bar' => 1, 'baz' => 2, 'foo' => 3], $sorted->toArray());
     }

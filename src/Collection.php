@@ -322,10 +322,27 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
     }
 
     /**
-     * Returns a new collection which is sorted with an optional comparator function.
-     * If the comparator is omitted, the collection is sorted using SORT_REGULAR.
+     * Returns a new sorted collection. Defaults to SORT_REGULAR behaviour.
+     * Note that internally this method uses asort so index association is maintained.
      *
-     * Note that internally this method uses asort and uasort so index association is maintained.
+     * @see https://www.php.net/manual/en/function.asort.php
+     *
+     * @param int $flags Flags to pass to asort
+     *
+     * @return Collection<TKey,T>
+     */
+    public function sort(int $flags = \SORT_REGULAR): self
+    {
+        $copy = $this->toArray();
+
+        asort($copy, $flags);
+
+        return new self($copy);
+    }
+
+    /**
+     * Returns a new collection which is sorted with a comparator function.
+     * Note that internally this method uses uasort so index association is maintained.
      *
      * @see https://www.php.net/manual/en/function.asort.php
      * @see https://www.php.net/manual/en/function.uasort.php
@@ -334,15 +351,11 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
      *
      * @return Collection<TKey,T>
      */
-    public function sort(?callable $comparator = null): self
+    public function usort(callable $comparator): self
     {
-        $copy = $this->elements;
+        $copy = $this->toArray();
 
-        if ($comparator) {
-            uasort($copy, $comparator);
-        } else {
-            asort($copy);
-        }
+        uasort($copy, $comparator);
 
         return new self($copy);
     }
