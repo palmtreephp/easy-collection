@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Palmtree\EasyCollection\Test;
 
+use function Palmtree\EasyCollection\c;
 use Palmtree\EasyCollection\Collection;
 use PHPUnit\Framework\TestCase;
-use function Palmtree\EasyCollection\c;
 
 class CollectionTest extends TestCase
 {
@@ -340,7 +340,7 @@ class CollectionTest extends TestCase
 
     public function testArrayAccess(): void
     {
-        $collection        = new Collection();
+        $collection = new Collection();
         $collection['foo'] = 'bar';
         $collection['baz'] = 'qux';
 
@@ -354,7 +354,7 @@ class CollectionTest extends TestCase
 
         $this->assertSame('qux', $collection['baz']);
 
-        $collection   = new Collection();
+        $collection = new Collection();
         $collection[] = 'foo';
         $collection[] = 'bar';
 
