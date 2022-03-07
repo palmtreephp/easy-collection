@@ -47,9 +47,9 @@ foreach ($collection as $key => $value) {
 ```
 
 ```php
-use Palmtree\EasyCollection\Collection
+use function Palmtree\EasyCollection\c;
 
-$collection = Collection::create([1, 9, 5, 3, 7, 10])
+$collection = c([1, 9, 5, 3, 7, 10])
     ->sort()
     ->filter(fn ($i) $i < 10)
     ->values()
