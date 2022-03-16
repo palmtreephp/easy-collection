@@ -256,7 +256,7 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
      *
      * @psalm-suppress PossiblyNullArgument
      */
-    public function filter(?callable $predicate): self
+    public function filter(?callable $predicate = null): self
     {
         return new self(array_filter($this->elements, $predicate, \ARRAY_FILTER_USE_BOTH));
     }
