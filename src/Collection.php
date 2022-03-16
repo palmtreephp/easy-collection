@@ -431,6 +431,16 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
         return new self(\array_slice($this->elements, $offset, $length, $preserveKeys));
     }
 
+    public function diff(iterable ...$iterables): self
+    {
+        $arrays = [];
+        foreach ($iterables as $iterable) {
+            $arrays[] = [...$iterable];
+        }
+
+        return new self(array_diff($this->elements, ...$arrays));
+    }
+
     /**
      * Returns the collection as a native array.
      *
