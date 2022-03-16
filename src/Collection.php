@@ -250,11 +250,13 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
     /**
      * Returns a new collection containing all elements which pass the predicate function.
      *
-     * @param callable(T, TKey=):bool $predicate
+     * @param ?callable(T, TKey=):bool $predicate
      *
      * @return Collection<TKey,T>
+     *
+     * @psalm-suppress PossiblyNullArgument
      */
-    public function filter(callable $predicate): self
+    public function filter(?callable $predicate): self
     {
         return new self(array_filter($this->elements, $predicate, \ARRAY_FILTER_USE_BOTH));
     }
