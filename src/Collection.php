@@ -397,6 +397,39 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
     }
 
     /**
+     * @template U
+     *
+     * @return Collection<TKey, U>
+     *
+     * @psalm-suppress MixedAssignment
+     */
+    public function pluck(string $field): self
+    {
+        $plucked = [];
+        foreach ($this->elements as $key => $value) {
+            if (\is_array($value) || $value instanceof \ArrayAccess) {
+                $newValue = $value[$field];
+            } elseif (\is_object($value)) {
+                $newValue = $value->$field;
+            } else {
+                throw new \LogicException('Collection values must be either arrays or objects');
+            }
+
+            $plucked[$key] = $newValue;
+        }
+
+        return new self($plucked);
+    }
+
+    /**
+     * @return Collection<TKey, T>
+     */
+    public function slice(int $offset, ?int $length, bool $preserveKeys = false): self
+    {
+        return new self(\array_slice($this->elements, $offset, $length, $preserveKeys));
+    }
+
+    /**
      * Returns the collection as a native array.
      *
      * @return array<TKey,T>

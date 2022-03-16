@@ -374,4 +374,61 @@ class CollectionTest extends TestCase
 
         $this->assertInstanceOf(Collection::class, $collection);
     }
+
+    public function testPluckWithObjects(): void
+    {
+        $obj1 = new \stdClass();
+        $obj1->id = 1;
+        $obj1->name = 'foo';
+
+        $obj2 = new \stdClass();
+        $obj2->id = 2;
+        $obj2->name = 'bar';
+
+        $obj3 = new \stdClass();
+        $obj3->id = 3;
+        $obj3->name = 'baz';
+
+        $collection = new Collection([$obj1, $obj2, $obj3]);
+
+        $plucked = $collection->pluck('id');
+        $this->assertSame([1, 2, 3], $plucked->toArray());
+
+        $plucked = $collection->pluck('name');
+        $this->assertSame(['foo', 'bar', 'baz'], $plucked->toArray());
+    }
+
+    public function testPluckWithArrays(): void
+    {
+        $collection = new Collection([
+            ['id' => 1, 'name' => 'foo'],
+            ['id' => 2, 'name' => 'bar'],
+            ['id' => 3, 'name' => 'baz'],
+        ]);
+
+        $plucked = $collection->pluck('id');
+        $this->assertSame([1, 2, 3], $plucked->toArray());
+
+        $plucked = $collection->pluck('name');
+        $this->assertSame(['foo', 'bar', 'baz'], $plucked->toArray());
+    }
+
+    public function testPluckThrowsExceptionOnInvalidData(): void
+    {
+        $collection = new Collection(['foo', 'bar', 'baz']);
+
+        $this->expectException('LogicException');
+        $collection->pluck('id');
+    }
+
+    public function testSlice(): void
+    {
+        $collection = new Collection(['foo', 'bar', 'baz']);
+
+        $sliced = $collection->slice(0, 2);
+        $this->assertSame(['foo', 'bar'], $sliced->toArray());
+
+        $sliced = $collection->slice(1, 1);
+        $this->assertSame(['bar'], $sliced->toArray());
+    }
 }
