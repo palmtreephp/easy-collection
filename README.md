@@ -54,11 +54,30 @@ $collection = c([1, 9, 5, 3, 7, 10])
     ->filter(fn ($i) $i < 10)
     ->values()
 
-$isAllOdd = $collection->every(fn ($i) => $i % 2 !== 0); // returns true
-$collection->contains(10); // returns false as it was removed in our filter
+// returns true as every element remaining in the collection is odd
+$isAllOdd = $collection->every(fn ($i) => $i % 2 !== 0);
+// returns false as it was removed in our filter
+$collection->contains(10);
+
+// returns true as at least one of the elements is false
+c([true, true, false, true, true])->some(fn ($v) => !$v);
 ```
 
 Many other methods are provided. Read through the documented [source code](src/Collection.php) to see more.
+
+### Generics
+
+The library supports template annotations for use by static analysers such as Psalm and PHPStan:
+
+```php
+/** @var Collection<int, Foo> **/
+$collection = new \Palmtree\EasyCollection\Collection();
+$collection->add(new Foo());
+
+foreach ($collection as $foo) {
+    // Psalm/PHPStan and PhpStorm know that $foo is an instance of Foo here
+}
+```
 
 ## License
 
