@@ -71,7 +71,7 @@ The library supports template annotations for use by static analysers such as Ps
 
 ```php
 /** @var Collection<int, Foo> **/
-$collection = new \Palmtree\EasyCollection\Collection();
+$collection = new Collection();
 $collection->add(new Foo());
 
 foreach ($collection as $foo) {
