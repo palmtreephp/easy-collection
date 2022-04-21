@@ -340,7 +340,7 @@ class CollectionTest extends TestCase
 
     public function testArrayAccess(): void
     {
-        $collection = new Collection();
+        $collection        = new Collection();
         $collection['foo'] = 'bar';
         $collection['baz'] = 'qux';
 
@@ -354,7 +354,7 @@ class CollectionTest extends TestCase
 
         $this->assertSame('qux', $collection['baz']);
 
-        $collection = new Collection();
+        $collection   = new Collection();
         $collection[] = 'foo';
         $collection[] = 'bar';
 
@@ -377,16 +377,16 @@ class CollectionTest extends TestCase
 
     public function testPluckWithObjects(): void
     {
-        $obj1 = new \stdClass();
-        $obj1->id = 1;
+        $obj1       = new \stdClass();
+        $obj1->id   = 1;
         $obj1->name = 'foo';
 
-        $obj2 = new \stdClass();
-        $obj2->id = 2;
+        $obj2       = new \stdClass();
+        $obj2->id   = 2;
         $obj2->name = 'bar';
 
-        $obj3 = new \stdClass();
-        $obj3->id = 3;
+        $obj3       = new \stdClass();
+        $obj3->id   = 3;
         $obj3->name = 'baz';
 
         $collection = new Collection([$obj1, $obj2, $obj3]);
@@ -434,11 +434,21 @@ class CollectionTest extends TestCase
 
     public function testDiff(): void
     {
-        $collection = new Collection(['foo', 'bar', 'baz']);
+        $collection  = new Collection(['foo', 'bar', 'baz']);
         $collection2 = new Collection(['bar']);
 
         $diff = $collection->diff(['foo'], $collection2);
 
         $this->assertSame([2 => 'baz'], $diff->toArray());
+    }
+
+    public function testIntersect(): void
+    {
+        $collection  = new Collection(['foo', 'bar', 'baz']);
+        $collection2 = new Collection(['bar', 'baz']);
+
+        $intersection = $collection->intersect($collection2);
+
+        $this->assertSame([1 => 'bar', 2 => 'baz'], $intersection->toArray());
     }
 }
