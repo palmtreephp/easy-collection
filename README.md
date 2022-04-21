@@ -19,7 +19,7 @@ composer require palmtree/easy-collection
 
 ## Usage
 
-Collections can be used just like arrays for the most part. They implement `ArrayAccess`, `IteratorAggregate` and `Countable`:
+Collections can be used just like arrays for the most part. They implement [`ArrayAccess`](https://www.php.net/manual/en/class.arrayaccess.php), [`Traversable`](https://www.php.net/manual/en/class.traversable) and [`Countable`](https://www.php.net/manual/en/class.countable):
 
 ```php
 use Palmtree\EasyCollection\Collection

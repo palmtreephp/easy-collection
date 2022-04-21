@@ -466,7 +466,7 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
     }
 
     /**
-     * @return \ArrayIterator<TKey,T>
+     * @return \Traversable<TKey,T>
      */
     public function getIterator(): \Traversable
     {
