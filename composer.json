@@ -31,6 +31,10 @@
             "Palmtree\\EasyCollection\\Test\\": "tests"
         }
     },
+    "scripts": {
+        "fix": "@php vendor/bin/php-cs-fixer fix",
+        "psalm": "@php vendor/bin/psalm --no-cache"
+    },
     "config": {
         "allow-plugins": {
             "composer/package-versions-deprecated": true
