@@ -1,6 +1,6 @@
 {
     "name": "palmtree/easy-collection",
-    "description": "Easy collection library",
+    "description": "Immutable collections which provide commonly used functionality missing from arrays",
     "type": "library",
     "license": "MIT",
     "authors": [

@@ -1,4 +1,4 @@
-# :palm_tree: Palmtree Easy Collection
+# :palm_tree: Easy Collection
 
 [![License](https://img.shields.io/github/license/palmtreephp/easy-collection)](LICENSE)
 [![Build](https://img.shields.io/github/workflow/status/palmtreephp/easy-collection/Build.svg)](https://github.com/palmtreephp/easy-collection/actions/workflows/build.yml)
