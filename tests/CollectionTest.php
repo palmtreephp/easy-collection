@@ -451,4 +451,13 @@ class CollectionTest extends TestCase
 
         $this->assertSame([1 => 'bar', 2 => 'baz'], $intersection->toArray());
     }
+
+    public function testUnique(): void
+    {
+        $collection = new Collection(['foo', 'bar', 'baz', 'foo', 'baz']);
+
+        $unique = $collection->unique();
+
+        $this->assertSame(['foo', 'bar', 'baz'], $unique->toArray());
+    }
 }

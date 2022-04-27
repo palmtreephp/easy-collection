@@ -455,6 +455,11 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
         return new self(array_intersect($this->elements, ...$arrays));
     }
 
+    public function unique(): self
+    {
+        return new self(array_unique($this->elements));
+    }
+
     /**
      * Returns the collection as a native array.
      *
