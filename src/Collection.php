@@ -435,6 +435,9 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
         return new self(\array_slice($this->elements, $offset, $length, $preserveKeys));
     }
 
+    /**
+     * @return Collection<TKey, T>
+     */
     public function diff(iterable ...$iterables): self
     {
         $arrays = [];
@@ -445,6 +448,9 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
         return new self(array_diff($this->elements, ...$arrays));
     }
 
+    /**
+     * @return Collection<TKey, T>
+     */
     public function intersect(iterable ...$iterables): self
     {
         $arrays = [];
@@ -455,6 +461,9 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
         return new self(array_intersect($this->elements, ...$arrays));
     }
 
+    /**
+     * @return Collection<TKey, T>
+     */
     public function unique(): self
     {
         return new self(array_unique($this->elements));
