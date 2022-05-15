@@ -363,6 +363,22 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
     }
 
     /**
+     * Returns a new collection which is sorted by the collection's keys.
+     *
+     * @see https://www.php.net/manual/en/function.ksort.php
+     *
+     * @return Collection<TKey,T>
+     */
+    public function ksort(int $flags = SORT_REGULAR): self
+    {
+        $copy = $this->toArray();
+
+        ksort($copy, $flags);
+
+        return new self($copy);
+    }
+
+    /**
      * Returns whether the collection is empty.
      */
     public function isEmpty(): bool

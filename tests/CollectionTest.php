@@ -323,6 +323,20 @@ class CollectionTest extends TestCase
         $this->assertSame(['bar' => 1, 'baz' => 2, 'foo' => 3], $sorted->toArray());
     }
 
+    public function testKSort(): void
+    {
+        $collection = new Collection([
+            'b' => 'foo',
+            'a' => 'bar',
+            'd' => 'baz',
+            'c' => 'qux',
+        ]);
+
+        $sorted = $collection->ksort();
+
+        $this->assertSame(['a', 'b', 'c', 'd'], $sorted->keys()->toArray());
+    }
+
     public function testIsList(): void
     {
         $collection = new Collection(['foo', 'bar', 'baz']);
