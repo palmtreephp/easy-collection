@@ -22,28 +22,26 @@ composer require palmtree/easy-collection
 Collections can be used just like arrays for the most part. They implement [`ArrayAccess`](https://www.php.net/manual/en/class.arrayaccess), [`Traversable`](https://www.php.net/manual/en/class.traversable) and [`Countable`](https://www.php.net/manual/en/class.countable):
 
 ```php
-use Palmtree\EasyCollection\Collection
+use function Palmtree\EasyCollection\c;
 
-$collection = new Collection(['foo' => 'bar', 'baz' => 'qux']);
+$collection = c(['foo' => 'bar', 'baz' => 'qux']);
 
 $foo = $collection['foo'];
 $collection['baz2'] = 'qux';
 
-isset($collection['baz']);
+isset($collection['baz']); // true
+unset($collection['baz']);
+count($collection);
+
+foreach ($collection as $key => $value) {
+    // do stuff with value and/or key
+}
 
 // find returns the first matching element
 $foo = $collection->find(fn ($v) => $v === 'bar');
 
 // filter returns a new filtered collection
 $quxCollection = $collection->filter(fn ($v) => $v === 'qux');
-
-unset($collection['baz']);
-
-count($collection);
-
-foreach ($collection as $key => $value) {
-    // do stuff with value and/or key
-}
 ```
 
 ```php
