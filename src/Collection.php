@@ -369,7 +369,7 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
      *
      * @return Collection<TKey,T>
      */
-    public function ksort(int $flags = SORT_REGULAR): self
+    public function ksort(int $flags = \SORT_REGULAR): self
     {
         $copy = $this->toArray();
 
