@@ -13,7 +13,7 @@ namespace Palmtree\EasyCollection;
  *
  * @psalm-consistent-constructor
  */
-class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
+class Collection implements \Countable, \IteratorAggregate, \ArrayAccess, \JsonSerializable
 {
     /**
      * @var array<TKey,T>
@@ -542,5 +542,10 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
     public function offsetUnset(mixed $offset): void
     {
         $this->remove($offset);
+    }
+
+    public function jsonSerialize(): array
+    {
+        return $this->elements;
     }
 }
