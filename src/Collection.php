@@ -486,6 +486,14 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess, \JsonS
     }
 
     /**
+     * @psalm-suppress MixedArgumentTypeCoercion
+     */
+    public function implode(string $separator = ','): string
+    {
+        return implode($separator, array_values($this->elements));
+    }
+
+    /**
      * Returns the collection as a native array.
      *
      * @return array<TKey,T>

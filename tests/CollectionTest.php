@@ -474,4 +474,12 @@ class CollectionTest extends TestCase
 
         $this->assertSame(['foo', 'bar', 'baz'], $unique->toArray());
     }
+
+    public function testImplode(): void
+    {
+        $collection = new Collection(['foo', 'bar', 'baz']);
+
+        $this->assertSame('foo,bar,baz', $collection->implode());
+        $this->assertSame('foo bar baz', $collection->implode(' '));
+    }
 }
