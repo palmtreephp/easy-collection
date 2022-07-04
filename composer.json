@@ -35,5 +35,10 @@
         "fix": "@php vendor/bin/php-cs-fixer fix",
         "psalm": "@php vendor/bin/psalm --no-cache",
         "test": "@php vendor/bin/phpunit"
+    },
+    "config": {
+        "platform": {
+            "php": "8.0"
+        }
     }
 }
