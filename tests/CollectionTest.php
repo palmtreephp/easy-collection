@@ -482,4 +482,21 @@ class CollectionTest extends TestCase
         $this->assertSame('foo,bar,baz', $collection->implode());
         $this->assertSame('foo bar baz', $collection->implode(' '));
     }
+
+    public function testReverse(): void
+    {
+        $collection = new Collection(['foo', 'bar', 'baz']);
+
+        $this->assertSame(['baz', 'bar', 'foo'], $collection->reverse()->toArray());
+
+        $collection = new Collection([1 => 'foo', 2 => 'bar', 3 => 'baz']);
+        $this->assertSame([3 => 'baz', 2 => 'bar', 1 => 'foo'], $collection->reverse(true)->toArray());
+    }
+
+    public function testFlip(): void
+    {
+        $collection = new Collection([1 => 'foo', 2 => 'bar', 3 => 'baz']);
+
+        $this->assertSame(['foo' => 1, 'bar' => 2, 'baz' => 3], $collection->flip()->toArray());
+    }
 }

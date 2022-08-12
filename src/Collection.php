@@ -493,6 +493,17 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess, \JsonS
         return implode($separator, array_values($this->elements));
     }
 
+    public function reverse(bool $preserveKeys = false): self
+    {
+        return new self(array_reverse($this->elements, $preserveKeys));
+    }
+
+    public function flip(): self
+    {
+        /** @psalm-suppress PossiblyInvalidArgument */
+        return new self(array_flip($this->elements));
+    }
+
     /**
      * Returns the collection as a native array.
      *
