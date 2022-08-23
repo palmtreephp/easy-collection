@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Palmtree\EasyCollection\Test;
 
+use function Palmtree\EasyCollection\c;
 use Palmtree\EasyCollection\Collection;
 use PHPUnit\Framework\TestCase;
 
@@ -349,5 +350,10 @@ class CollectionTest extends TestCase
         $collection = new Collection(['foo', 'bar', 'baz']);
 
         $this->assertSame(['foo', 'bar', 'baz'], iterator_to_array($collection));
+    }
+
+    public function testFunction(): void
+    {
+        $this->assertInstanceOf(Collection::class, c());
     }
 }
