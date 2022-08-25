@@ -314,7 +314,7 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
      *
      * @see https://www.php.net/manual/en/function.asort.php
      *
-     * @param ?callable(T):int $comparator
+     * @param ?callable(T, T):int $comparator
      *
      * @return Collection<TKey,T>
      */
@@ -334,7 +334,7 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
     /**
      * Returns a new collection with the elements sorted.
      *
-     * @param ?callable(T):int $comparator
+     * @param ?callable(T, T):int $comparator
      *
      * @return Collection<TKey,T>
      */

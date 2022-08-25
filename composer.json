@@ -35,5 +35,18 @@
         "platform": {
             "php": "7.4"
         }
+    },
+    "scripts": {
+        "lint": "find -L src -type f -name '*.php' -print0 | xargs -0 -n 1 -P $(nproc) php -l",
+        "test": "@php vendor/bin/phpunit -v",
+        "fix": "@php vendor/bin/php-cs-fixer fix -v",
+        "sniff": "@php vendor/bin/php-cs-fixer fix -v --dry-run --stop-on-violation --using-cache=no --diff",
+        "psalm": "@php vendor/bin/psalm --no-cache",
+        "ci-check": [
+            "@lint",
+            "@sniff",
+            "@psalm",
+            "@test"
+        ]
     }
 }
