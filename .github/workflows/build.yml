@@ -45,4 +45,3 @@ jobs:
 
       - name: PHPUnit
         run: ./vendor/bin/phpunit -v
-        if: matrix.php-versions == 8.0
