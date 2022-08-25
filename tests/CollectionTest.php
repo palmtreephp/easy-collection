@@ -199,6 +199,10 @@ class CollectionTest extends TestCase
         $this->assertFalse($collection->contains($obj1));
         $this->assertTrue($collection->contains($obj2));
         $this->assertTrue($collection->contains($obj3));
+
+        $collection = new Collection([true, false, true, null]);
+
+        $this->assertSame([0 => true, 2 => true], $collection->filter()->toArray());
     }
 
     public function testMap(): void
