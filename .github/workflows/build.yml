@@ -33,7 +33,6 @@ jobs:
 
       - name: Install dependencies
         run: composer install --prefer-dist --no-interaction --no-ansi
-        if: matrix.php-versions == 8.0
 
       - name: PHP-CS-Fixer
         run: ./vendor/bin/php-cs-fixer fix -v --dry-run --stop-on-violation --using-cache=no --diff
