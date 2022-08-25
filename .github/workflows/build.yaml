@@ -7,10 +7,10 @@ jobs:
     runs-on: 'ubuntu-20.04'
     strategy:
       matrix:
-        php-versions: [ '8.0', '8.1' ]
+        php-versions: [ '8.0', '8.1', '8.2' ]
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -23,26 +23,26 @@ jobs:
           echo ::set-output name=composer_cache_dir::$(composer config cache-dir)
 
       - name: Cache composer downloads
-        uses: actions/cache@v1
+        uses: actions/cache@v3
         with:
           path: ${{ steps.vars.outputs.composer_cache_dir }}
-          key: composer
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
 
       - name: Lint PHP
-        run: find -L src -type f -name '*.php' -print0 | xargs -0 -n 1 -P 4 php -l
+        run: find -L src -type f -name '*.php' -print0 | xargs -0 -n 1 -P $(nproc) php -l
 
       - name: Install dependencies
         run: composer install --prefer-dist --no-interaction --no-ansi
-        if: matrix.php-versions == 8.0
 
       - name: PHP-CS-Fixer
         run: ./vendor/bin/php-cs-fixer fix -v --dry-run --stop-on-violation --using-cache=no --diff
-        if: matrix.php-versions == 8.0
+        if: matrix.php-versions == 8.1
 
       - name: Psalm
         run: ./vendor/bin/psalm --config=psalm.xml --no-cache
-        if: matrix.php-versions == 8.0
+        if: matrix.php-versions == 8.1
 
       - name: PHPUnit
         run: ./vendor/bin/phpunit -v
-        if: matrix.php-versions == 8.0
