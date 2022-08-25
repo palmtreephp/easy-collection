@@ -236,7 +236,7 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
      */
     public function filter(?callable $predicate = null): self
     {
-        if ($predicate === null && \PHP_VERSION_ID < 80000) {
+        if ($predicate === null) {
             return new self(array_filter($this->elements));
         }
 
