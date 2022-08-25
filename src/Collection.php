@@ -237,8 +237,7 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
     public function filter(?callable $predicate = null): self
     {
         if ($predicate === null && \PHP_VERSION_ID < 80000) {
-            // Callback was only made nullable in PHP 8.0. To pass flags to the array_filter function in 7.4 we need to also pass a callback.
-            $predicate = fn ($element) => (bool)$element;
+            return new self(array_filter($this->elements));
         }
 
         return new self(array_filter($this->elements, $predicate, \ARRAY_FILTER_USE_BOTH));
