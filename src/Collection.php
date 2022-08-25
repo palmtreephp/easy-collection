@@ -43,7 +43,7 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
      * Sets the given element to the given key in the collection.
      *
      * @param TKey $key
-     * @param T $element
+     * @param T    $element
      */
     public function set($key, $element): self
     {
@@ -268,7 +268,7 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
      * Reduces the collection a single value.
      *
      * @param callable(mixed, T):mixed $callback
-     * @param mixed $initial
+     * @param mixed                    $initial
      *
      * @return mixed|null
      */
@@ -415,7 +415,7 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess
 
     /**
      * @param TKey|null $offset
-     * @param T $value
+     * @param T         $value
      */
     public function offsetSet($offset, $value): void
     {
