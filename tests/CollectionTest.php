@@ -201,6 +201,13 @@ class CollectionTest extends TestCase
         $this->assertTrue($collection->contains($obj3));
     }
 
+    public function testFilterWithNoCallback(): void
+    {
+        $collection = new Collection([true, false, true, null]);
+
+        $this->assertSame([0 => true, 2 => true], $collection->filter()->toArray());
+    }
+
     public function testMap(): void
     {
         $obj1 = new \stdClass();
