@@ -230,6 +230,25 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess, \JsonS
     }
 
     /**
+     * Applies the given callback function to each element in the collection.
+     *
+     * @param callable(T, TKey=, int=):bool|void $callback
+     */
+    public function each(callable $callback): self
+    {
+        $loopIndex = 0;
+        foreach ($this->elements as $key => $element) {
+            $result = $callback($element, $key, $loopIndex++);
+
+            if ($result === false) {
+                break;
+            }
+        }
+
+        return $this;
+    }
+
+    /**
      * Returns the first matching element which passes the predicate function.
      *
      * @param callable(T, TKey=):bool $predicate

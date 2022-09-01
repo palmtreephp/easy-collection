@@ -169,6 +169,41 @@ class CollectionTest extends TestCase
         $this->assertNull($collection->last());
     }
 
+    public function testEach(): void
+    {
+        $collection = new Collection([2, 4, 8, 16]);
+
+        /** @var Collection<int, int> $newCollection */
+        $newCollection = new Collection();
+
+        $collection->each(fn ($value) => $newCollection->add($value * 2));
+
+        $this->assertSame([4, 8, 16, 32], $newCollection->toArray());
+
+        $collection = new Collection(['foo' => 'bar', 'baz' => 'qux']);
+
+        $keys = ['foo', 'baz'];
+
+        $collection->each(function ($_, $key, $loopIndex) use ($keys): void {
+            $this->assertSame($keys[$loopIndex], $key);
+        });
+    }
+
+    public function testBreakingFromEach(): void
+    {
+        $collection = new Collection([2, 4, 8, 16]);
+        $newCollection = new Collection();
+        $collection->each(function ($value) use ($newCollection) {
+            if ($value === 8) {
+                return false;
+            }
+
+            $newCollection->add($value * 2);
+        });
+
+        $this->assertSame([4, 8], $newCollection->toArray());
+    }
+
     public function testFind(): void
     {
         $obj1 = new \stdClass();
