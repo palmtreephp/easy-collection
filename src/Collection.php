@@ -59,7 +59,7 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess, \JsonS
      * Sets the given element to the given key in the collection.
      *
      * @param TKey $key
-     * @param T $element
+     * @param T    $element
      *
      * @return Collection<TKey, T>
      */
@@ -484,6 +484,7 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess, \JsonS
     }
 
     /**
+     * @param iterable<array-key, T> ...$iterables
      * @return Collection<TKey, T>
      */
     public function intersect(iterable ...$iterables): self
@@ -512,7 +513,7 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess, \JsonS
             return new self($result);
         }
 
-        return new self(array_unique($this->elements, $flags));
+        return new self(array_unique($this->elements));
     }
 
     /**
@@ -534,11 +535,14 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess, \JsonS
         return new self(array_flip($this->elements));
     }
 
-    public function flatten()
+    /**
+     * @return Collection<int, T>
+     */
+    public function flatten(): self
     {
         $result = [];
 
-        array_walk_recursive($this->elements, function ($a) use (&$result) {
+        array_walk_recursive($this->elements, function (mixed $a) use (&$result) {
             $result[] = $a;
         });
 
@@ -583,7 +587,7 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess, \JsonS
 
     /**
      * @param TKey|null $offset
-     * @param T $value
+     * @param T         $value
      */
     public function offsetSet(mixed $offset, mixed $value): void
     {
