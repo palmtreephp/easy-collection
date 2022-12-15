@@ -59,7 +59,7 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess, \JsonS
      * Sets the given element to the given key in the collection.
      *
      * @param TKey $key
-     * @param T    $element
+     * @param T $element
      *
      * @return Collection<TKey, T>
      */
@@ -499,9 +499,20 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess, \JsonS
     /**
      * @return Collection<TKey, T>
      */
-    public function unique(): self
+    public function unique(bool $strict = false): self
     {
-        return new self(array_unique($this->elements));
+        if ($strict) {
+            $result = [];
+            foreach ($this->elements as $value) {
+                if (!\in_array($value, $result, true)) {
+                    $result[] = $value;
+                }
+            }
+
+            return new self($result);
+        }
+
+        return new self(array_unique($this->elements, $flags));
     }
 
     /**
@@ -521,6 +532,17 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess, \JsonS
     {
         /** @psalm-suppress PossiblyInvalidArgument */
         return new self(array_flip($this->elements));
+    }
+
+    public function flatten()
+    {
+        $result = [];
+
+        array_walk_recursive($this->elements, function ($a) use (&$result) {
+            $result[] = $a;
+        });
+
+        return new self($result);
     }
 
     /**
@@ -561,7 +583,7 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess, \JsonS
 
     /**
      * @param TKey|null $offset
-     * @param T         $value
+     * @param T $value
      */
     public function offsetSet(mixed $offset, mixed $value): void
     {
