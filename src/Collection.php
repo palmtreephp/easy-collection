@@ -232,7 +232,7 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess, \JsonS
     /**
      * Applies the given callback function to each element in the collection.
      *
-     * @param callable(T, TKey=, int=):bool|void $callback
+     * @psalm-param callable(T, TKey=, int=):bool $callback
      */
     public function each(callable $callback): self
     {
@@ -443,6 +443,7 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess, \JsonS
      * @return Collection<TKey, U>
      *
      * @psalm-suppress MixedAssignment
+     * @psalm-suppress MixedArrayAccess
      */
     public function pluck(string $field): self
     {
@@ -471,6 +472,8 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess, \JsonS
     }
 
     /**
+     * @param iterable<array-key, T> ...$iterables
+     *
      * @return Collection<TKey, T>
      */
     public function diff(iterable ...$iterables): self
@@ -485,6 +488,7 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess, \JsonS
 
     /**
      * @param iterable<array-key, T> ...$iterables
+     *
      * @return Collection<TKey, T>
      */
     public function intersect(iterable ...$iterables): self
@@ -504,9 +508,9 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess, \JsonS
     {
         if ($strict) {
             $result = [];
-            foreach ($this->elements as $value) {
+            foreach ($this->elements as $key => $value) {
                 if (!\in_array($value, $result, true)) {
-                    $result[] = $value;
+                    $result[$key] = $value;
                 }
             }
 
@@ -542,9 +546,16 @@ class Collection implements \Countable, \IteratorAggregate, \ArrayAccess, \JsonS
     {
         $result = [];
 
-        array_walk_recursive($this->elements, function (mixed $a) use (&$result) {
-            $result[] = $a;
-        });
+        array_walk_recursive(
+            $this->elements,
+            /** @param T $a */
+            function (mixed $a) use (&$result) {
+                \assert(\is_array($result));
+                $result[] = $a;
+            }
+        );
+
+        /** @var array<int, T> $result */
 
         return new self($result);
     }

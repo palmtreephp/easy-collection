@@ -518,6 +518,16 @@ class CollectionTest extends TestCase
         $this->assertSame(['foo', 'bar', 'baz'], $unique->toArray());
     }
 
+    public function testUniqueStrict(): void
+    {
+        $obj1 = new \stdClass();
+        $obj2 = new \stdClass();
+
+        $collection = new Collection([$obj1, $obj2, $obj1, $obj2]);
+
+        $this->assertSame([$obj1, $obj2], $collection->unique(true)->toArray());
+    }
+
     public function testImplode(): void
     {
         $collection = new Collection(['foo', 'bar', 'baz']);
@@ -541,5 +551,11 @@ class CollectionTest extends TestCase
         $collection = new Collection([1 => 'foo', 2 => 'bar', 3 => 'baz']);
 
         $this->assertSame(['foo' => 1, 'bar' => 2, 'baz' => 3], $collection->flip()->toArray());
+    }
+
+    public function testFlatten(): void
+    {
+        $collection = new Collection([1, 2, [3, 4, [5, 6]]]);
+        $this->assertSame([1, 2, 3, 4, 5, 6], $collection->flatten()->toArray());
     }
 }
