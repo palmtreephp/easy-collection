@@ -1,3 +1,5 @@
+## WARNING: THIS REPO IS ABANDONDED. THE LIBRARY IS BEING MAINTAINED UNDER A NEW NAME AND A [NEW HOME](https://github.com/palmtreephp/collection)
+
 # :palm_tree: Easy Collection
 
 [![License](https://img.shields.io/github/license/palmtreephp/easy-collection)](LICENSE)
